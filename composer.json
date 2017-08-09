@@ -1,0 +1,109 @@
+{
+  "name": "phase2/gizmo",
+  "description": "A demo/template Drupal project which replaces grunt-drupal-tasks with a composer-based workflow.",
+  "license": "MIT",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://packages.drupal.org/8"
+    }
+  ],
+  "require": {
+    "composer/installers": "^1.2",
+    "cweagans/composer-patches": "^1.6",
+    "drupal-composer/drupal-scaffold": "^2.2",
+    "drupal/core": "~8.0",
+    "kporras07/composer-symlinks": "^0.1.0@dev",
+    "roave/security-advisories": "dev-master"
+  },
+  "require-dev": {
+    "behat/mink": "~1.7",
+    "behat/mink-goutte-driver": "~1.2",
+    "behat/mink-zombie-driver": "~1.2",
+    "drupal/coder": "^8.2",
+    "drupal/console": "~1",
+    "drupal/drupal-extension": "~3.0",
+    "drush/drush": "^8",
+    "jakub-onderka/php-parallel-lint": "^0.9.2",
+    "jcalderonzumba/gastonjs": "~1.0.2",
+    "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
+    "mikey179/vfsstream": "~1.2",
+    "phpmd/phpmd": "~2.1",
+    "phpunit/phpunit": ">=4.8.28 <5",
+    "pyrech/composer-changelogs": "^1.5"
+  },
+  "conflict": {
+    "drupal/drupal": "*"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "sort-packages": true
+  },
+  "scripts": {
+    "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
+    "project-scaffold": [
+      "Kporras07\\ComposerSymlinks\\ScriptHandler::createSymlinks",
+      "cp -R src/static/* build/html/ || true"
+    ],
+    "theme-install": [
+      "cd src/themes/sprocket && npm install"
+    ],
+    "phplint": "parallel-lint -e php,module,install,profile,theme,inc src/modules src/profiles src/sites src/libraries",
+    "phpcs": "phpcs -p --standard=phpcs.xml.dist src/libraries src/modules src/profiles",
+    "phpcbf": "phpcbf --standard=phpcs.xml.dist src/libraries src/modules src/profiles",
+    "test": [
+      "@phplint",
+      "@phpcs"
+    ],
+    "behat": [
+      "behat --config=test/behat/behat.yml --tags ~@wip -- test/behat/features/*.feature"
+    ],
+    "core-asset-update": [
+      "sed -e 's/\\.\\.\\/vendor/\\.\\/vendor/g' build/html/core/phpcs.xml.dist > phpcs.xml.dist"
+    ],
+    "outdated-safe": [
+      "@composer outdated --direct --strict --ansi --minor-only"
+    ],
+    "update-core": [
+      "@composer update drupal/core --with-dependencies"
+    ],
+    "post-install-cmd": [
+      "[ -f 'build/html/index.php' ] || @drupal-scaffold",
+      "@project-scaffold"
+    ],
+    "post-update-cmd": [
+      "@drupal-scaffold",
+      "@project-scaffold",
+      "@core-asset-update",
+      "@theme-install"
+    ]
+  },
+  "extra": {
+    "installer-paths": {
+      "build/html/core": [
+        "type:drupal-core"
+      ],
+      "build/html/modules/contrib/{$name}": [
+        "type:drupal-module"
+      ],
+      "build/html/profiles/contrib/{$name}": [
+        "type:drupal-profile"
+      ],
+      "build/html/themes/contrib/{$name}": [
+        "type:drupal-theme"
+      ],
+      "build/drush/contrib/{$name}": [
+        "type:drupal-drush"
+      ]
+    },
+    "symlinks": {
+      "src/modules": "build/html/modules/custom",
+      "src/themes": "build/html/themes/custom",
+      "src/profiles": "build/html/profiles/custom",
+      "src/libraries": "build/html/libraries/custom",
+      "src/sites/settings.common.php": "build/html/sites/settings.common.php",
+      "src/sites/default": "build/html/sites/default"
+    }
+  }
+}

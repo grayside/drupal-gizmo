@@ -1,0 +1,3 @@
+This file exists to prevent complaining by the copy step of `composer run-script project-scaffold`.
+
+It is also effect at testing the success of that copy operation, by finding it in build/html.

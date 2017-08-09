@@ -1,0 +1,11 @@
+{
+  "name": "sprocket",
+  "version": "1.0.0",
+  "description": "Placeholder example of a project theme with npm dependencies.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}
