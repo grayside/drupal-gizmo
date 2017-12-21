@@ -17,7 +17,8 @@
     "drupal-composer/info-rewrite": "~1.0",
     "drupal/core": "~8.0",
     "kporras07/composer-symlinks": "^0.1.0@dev",
-    "roave/security-advisories": "dev-master"
+    "roave/security-advisories": "dev-master",
+    "wikimedia/composer-merge-plugin": "^1.4"
   },
   "require-dev": {
     "behat/mink": "~1.7",
@@ -49,6 +50,7 @@
     }
   },
   "scripts": {
+    "boom": "DrupalGizmo\\Composer\\ScriptHandler::boom",
     "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
     "project-scaffold": [
       "Kporras07\\ComposerSymlinks\\ScriptHandler::createSymlinks",
@@ -107,6 +109,19 @@
     },
     "gizmo": {
       "drupal-path": "build/html"
+    },
+    "merge-plugin": {
+      "include": [
+        "composer.local.json",
+        "src/themes/*/composer.json"
+      ],
+      "recurse": false,
+      "replace": false,
+      "ignore-duplicates": false,
+      "merge-dev": true,
+      "merge-extra": false,
+      "merge-extra-deep": false,
+      "merge-scripts": false
     },
     "symlinks": {
       "src/modules": "build/html/modules/custom",
