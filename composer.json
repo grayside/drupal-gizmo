@@ -44,9 +44,9 @@
     "sort-packages": true
   },
   "autoload": {
-    "classmap": [
-      "bin/composer/ScriptHandler.php"
-    ]
+    "psr-4": {
+      "DrupalGizmo\\Composer\\": "bin/composer/"
+    }
   },
   "scripts": {
     "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
@@ -77,7 +77,7 @@
       "@composer update drupal/core --with-dependencies"
     ],
     "post-install-cmd": [
-      "DrupalGizmo\\composer\\ScriptHandler::runDrupalScaffoldIfNoFiles",
+      "DrupalGizmo\\Composer\\ScriptHandler::runDrupalScaffoldIfNoFiles",
       "@project-scaffold"
     ],
     "post-update-cmd": [

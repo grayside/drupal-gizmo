@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \DrupalGizmo\composer\ScriptHandler.
+ * Contains \DrupalGizmo\Composer\ScriptHandler.
  */
 
-namespace DrupalGizmo\composer;
+namespace DrupalGizmo\Composer;
 
 use Composer\Script\Event;
 use Symfony\Component\Process\Process;
@@ -13,6 +13,12 @@ use Symfony\Component\Filesystem\Filesystem;;
 
 class ScriptHandler {
 
+  /**
+   * Wraps drupal-project/drupal-scaffold script to run less frequently.
+   *
+   * @param \Composer\Script\Event $event
+   *  Script event.
+   */
   public static function runDrupalScaffoldIfNoFiles(Event $event) {
     $base_path = $event->getComposer()->getPackage()->getExtra()['gizmo']['drupal-path'];
 
@@ -24,6 +30,16 @@ class ScriptHandler {
     else {
       $event->getIO()->write('Scaffolded "index.php" detected, skipping execution of drupal-scaffold');
     }
+  }
+
+  /**
+   * Simpley test that these scripts can load.
+   *
+   * @param \Composer\Script\Event $event
+   *  Script event.
+   */
+  public static function boom(Event $event) {
+    $event->getIO()->write('<error>BOOM</error>');
   }
 
 }
